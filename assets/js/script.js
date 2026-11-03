@@ -420,8 +420,10 @@ if (chatPanel && chatLauncher) {
     const chatInput = document.getElementById("chatInput");
     const chatSend = document.getElementById("chatSend");
     const chatFinish = document.getElementById("chatFinish");
+    const chatQuickReplies = document.getElementById("chatQuickReplies");
     const chatMessages = [];
     const projectDetails = {
+        service: "",
         projectType: "",
         language: "",
         goals: "",
@@ -429,18 +431,87 @@ if (chatPanel && chatLauncher) {
         email: "",
         phone: ""
     };
-    const projectQuestions = [
+    const projectServices = [
         {
-            key: "projectType",
-            prompt: "What type of work do you need? For example: a business website, portfolio, online store, landing page, graphic design, or something else."
+            name: "Website development",
+            options: [
+                "Business website",
+                "Portfolio website",
+                "Online store",
+                "Landing page",
+                "Website redesign"
+            ],
+            goalOptions: [
+                "Show my business or services",
+                "Sell products online",
+                "Show my work or portfolio",
+                "Get bookings or inquiries",
+                "I'll describe it myself"
+            ]
         },
         {
+            name: "Graphic design",
+            options: [
+                "Poster or flyer",
+                "Social media graphics",
+                "Logo and branding",
+                "Other graphic design"
+            ],
+            goalOptions: [
+                "Create a poster or flyer",
+                "Create social media posts",
+                "Design a logo or brand identity",
+                "I'll describe it myself"
+            ]
+        },
+        {
+            name: "Digital marketing",
+            options: [
+                "Social media content",
+                "Content ideas",
+                "Digital marketing support",
+                "Other marketing help"
+            ],
+            goalOptions: [
+                "Grow my social media",
+                "Plan content for my business",
+                "Promote a product or service",
+                "I'll describe it myself"
+            ]
+        },
+        {
+            name: "Video editing",
+            options: [
+                "Social media reel",
+                "Promotional video",
+                "Basic video editing",
+                "Other video work"
+            ],
+            goalOptions: [
+                "Create a social media reel",
+                "Make a promotional video",
+                "Edit my existing footage",
+                "I'll describe it myself"
+            ]
+        },
+        {
+            name: "Other service",
+            options: [
+                "Something not listed"
+            ],
+            goalOptions: [
+                "I'll describe what I need"
+            ]
+        }
+    ];
+    const projectQuestions = [
+        {
             key: "language",
-            prompt: "Which language should the website use? For example: English, Punjabi, Hindi, or more than one."
+            prompt: "What language or languages should I note for this project? Choose an option below, or type another language."
         },
         {
             key: "goals",
-            prompt: "What would you like the project to do? Tell me about the audience, pages, features, style, or examples you have in mind."
+            prompt: "What do you need the project to do? Choose a common option below, or select the option to describe it yourself."
         },
         {
             key: "name",
@@ -452,18 +523,26 @@ if (chatPanel && chatLauncher) {
         },
         {
             key: "phone",
-            prompt: "Would you like to include a phone number? Type a number, or type “skip” to leave it out."
+            prompt: "Would you like to include a phone number? Type it here or choose an option to skip."
         }
     ];
     let activeQuestion = 0;
+    let customGoalInput = false;
     let emailDraftReady = false;
 
     function updateChatControls() {
         chatInput.disabled = emailDraftReady;
         chatSend.disabled = emailDraftReady;
-        chatFinish.disabled =
-            emailDraftReady ||
-            !chatMessages.some((message) => message.role === "user");
+        const projectDetailsComplete =
+            Boolean(projectDetails.service) &&
+            Boolean(projectDetails.projectType) &&
+            activeQuestion >= projectQuestions.length;
+        chatFinish.hidden = !projectDetailsComplete || emailDraftReady;
+        chatFinish.disabled = emailDraftReady || !projectDetailsComplete;
+    }
+
+    function scrollChatToLatest() {
+        chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
     }
 
     function addChatBubble(role, text) {
@@ -471,7 +550,7 @@ if (chatPanel && chatLauncher) {
         bubble.className = `chat-bubble chat-bubble-${role}`;
         bubble.textContent = text;
         chatMessagesElement.appendChild(bubble);
-        chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
+        scrollChatToLatest();
         return bubble;
     }
 
@@ -482,13 +561,163 @@ if (chatPanel && chatLauncher) {
         button.textContent = label;
         button.addEventListener("click", action, { once: true });
         chatMessagesElement.appendChild(button);
-        chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
+        scrollChatToLatest();
+    }
+
+    function addChatOptions(options, onSelect) {
+        chatQuickReplies.replaceChildren();
+
+        options.forEach((option) => {
+            const button = document.createElement("button");
+            button.className = "chat-option";
+            button.type = "button";
+            button.textContent = `${getOptionIcon(option)} ${option}`;
+            button.addEventListener("click", () => {
+                clearChatOptions();
+                onSelect(option);
+            }, { once: true });
+            chatQuickReplies.appendChild(button);
+        });
+
+        scrollChatToLatest();
+    }
+
+    function clearChatOptions() {
+        chatQuickReplies.replaceChildren();
+        scrollChatToLatest();
+    }
+
+    function getOptionIcon(option) {
+        const icons = {
+            "Website development": "💻",
+            "Graphic design": "🎨",
+            "Digital marketing": "📱",
+            "Video editing": "🎬",
+            "Other service": "✨",
+            "Business website": "🏢",
+            "Portfolio website": "🖼️",
+            "Online store": "🛍️",
+            "Landing page": "📄",
+            "Website redesign": "🔄",
+            "Poster or flyer": "📰",
+            "Social media graphics": "📸",
+            "Logo and branding": "✳️",
+            "English": "🇬🇧",
+            "Punjabi": "🗣️",
+            "Hindi": "🗣️",
+            "English and Punjabi": "🌐",
+            "Other / not applicable": "➕",
+            "Skip phone number": "⏭️",
+            "Prefer not to share": "🔒"
+        };
+
+        return icons[option] || "➜";
     }
 
     function sendChatReply(text) {
         chatMessages.push({ role: "assistant", content: text });
         addChatBubble("assistant", text);
         updateChatControls();
+    }
+
+    function askForService() {
+        sendChatReply("What service are you looking for? Choose one to see the available options.");
+        addChatOptions(
+            projectServices.map((service) => service.name),
+            selectService
+        );
+    }
+
+    function addCurrentOptions() {
+        if (!projectDetails.service) {
+            addChatOptions(
+                projectServices.map((service) => service.name),
+                selectService
+            );
+            return;
+        }
+
+        const question = projectQuestions[activeQuestion];
+
+        if (!question) {
+            return;
+        }
+
+        if (question.key === "language") {
+            addChatOptions(
+                ["English", "Punjabi", "Hindi", "English and Punjabi", "Other / not applicable"],
+                handleOptionAnswer
+            );
+        } else if (question.key === "goals" && !customGoalInput) {
+            const service = projectServices.find(
+                (item) => item.name === projectDetails.service
+            );
+
+            addChatOptions(
+                service ? service.goalOptions : ["I'll describe it myself"],
+                handleOptionAnswer
+            );
+        } else if (question.key === "phone") {
+            addChatOptions(
+                ["Skip phone number", "Prefer not to share"],
+                handleOptionAnswer
+            );
+        }
+    }
+
+    function askCurrentQuestion() {
+        const question = projectQuestions[activeQuestion];
+
+        if (!question) {
+            sendChatReply(
+                "Thanks, I’ve collected your project details. " +
+                "Choose “Finish & prepare email” below to review the summary and open an email draft."
+            );
+            return;
+        }
+
+        sendChatReply(question.prompt);
+        addCurrentOptions();
+    }
+
+    function handleOptionAnswer(option) {
+        chatMessages.push({ role: "user", content: option });
+        addChatBubble("user", option);
+
+        if (
+            projectQuestions[activeQuestion] &&
+            projectQuestions[activeQuestion].key === "goals" &&
+            /describe/i.test(option)
+        ) {
+            customGoalInput = true;
+            sendChatReply("Please type a few details about what you need.");
+            return;
+        }
+
+        handleProjectAnswer(option);
+    }
+
+    function selectService(serviceName) {
+        const service = projectServices.find((item) => item.name === serviceName);
+
+        if (!service) {
+            return;
+        }
+
+        chatMessages.push({ role: "user", content: service.name });
+        addChatBubble("user", service.name);
+        sendChatReply(`What would you like for ${service.name.toLowerCase()}? Choose an option.`);
+        addChatOptions(service.options, (option) => {
+            chatMessages.push({ role: "user", content: option });
+            addChatBubble("user", option);
+            projectDetails.service = service.name;
+            projectDetails.projectType = option === "Something not listed"
+                ? `${service.name} — custom request`
+                : `${service.name} — ${option}`;
+            activeQuestion = 0;
+            customGoalInput = false;
+            askCurrentQuestion();
+        });
     }
 
     function getCommonAnswer(message) {
@@ -503,8 +732,9 @@ if (chatPanel && chatLauncher) {
                     "Choose “Finish & prepare email” to create the inquiry draft.";
             }
 
-            return "Hi! I’m here to help with a project inquiry. " +
-                projectQuestions[activeQuestion].prompt;
+            return projectDetails.service
+                ? "Hi! I’m here to help with your project."
+                : "Hi! I’m here to help with a project inquiry.";
         }
 
         if (isQuestion && /\b(price|prices|pricing|cost|costs|budget|charge|charges|how much)\b/.test(text)) {
@@ -546,8 +776,8 @@ if (chatPanel && chatLauncher) {
         }
 
         if (isQuestion && /\b(what can you do|what do you do|services|projects|work you do|help with)\b/.test(text)) {
-            return "I can collect a brief for a website, portfolio, online store, landing page, " +
-                "graphic design, or another project. Kirandeep can review your request and follow up.";
+            return "I can help with website development, graphic design, digital marketing, " +
+                "video editing, or another service. Choose a service below to see its options.";
         }
 
         if (isQuestion && /\b(free|paid|payment|subscribe|subscription|api)\b/.test(text)) {
@@ -569,8 +799,9 @@ if (chatPanel && chatLauncher) {
             `Name: ${projectDetails.name || "Not provided"}`,
             `Email: ${projectDetails.email || "Not provided"}`,
             `Phone: ${projectDetails.phone || "Not provided"}`,
-            `Project type: ${projectDetails.projectType || "Not provided"}`,
-            `Website language: ${projectDetails.language || "Not provided"}`,
+            `Service: ${projectDetails.service || "Not provided"}`,
+            `Selected option: ${projectDetails.projectType || "Not provided"}`,
+            `Language: ${projectDetails.language || "Not provided"}`,
             `Goals and requirements: ${projectDetails.goals || "Not provided"}`
         ].join("\n");
     }
@@ -590,6 +821,7 @@ if (chatPanel && chatLauncher) {
 
     function prepareChatEmail() {
         const summary = createProjectSummary();
+        clearChatOptions();
         sendChatReply(
             `Here’s the project summary for Kirandeep:\n\n${summary}\n\n` +
             "Choose below to open an email draft. Review it and press Send in your email app."
@@ -620,28 +852,28 @@ if (chatPanel && chatLauncher) {
             return;
         }
 
-        if (question.key === "phone" && /^(skip|no|none|no thanks)$/i.test(message)) {
+        if (
+            question.key === "phone" &&
+            /^(skip|skip phone number|prefer not to share|no|none|no thanks)$/i.test(message)
+        ) {
             projectDetails.phone = "";
         } else {
             projectDetails[question.key] = message;
         }
 
-        activeQuestion += 1;
-
-        if (activeQuestion < projectQuestions.length) {
-            sendChatReply(projectQuestions[activeQuestion].prompt);
-            return;
+        if (question.key === "goals") {
+            customGoalInput = false;
         }
 
-        sendChatReply(
-            "Thanks, I’ve collected your project details. " +
-            "Choose “Finish & prepare email” below to review the summary and open an email draft."
-        );
+        activeQuestion += 1;
+
+        askCurrentQuestion();
     }
 
     chatLauncher.addEventListener("click", () => {
         chatPanel.hidden = false;
         chatLauncher.setAttribute("aria-expanded", "true");
+        scrollChatToLatest();
         chatInput.focus();
     });
 
@@ -649,6 +881,24 @@ if (chatPanel && chatLauncher) {
         chatPanel.hidden = true;
         chatLauncher.setAttribute("aria-expanded", "false");
         chatLauncher.focus();
+    });
+
+    window.addEventListener("resize", scrollChatToLatest);
+
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener("resize", scrollChatToLatest);
+    }
+
+    if ("ResizeObserver" in window) {
+        const chatResizeObserver = new ResizeObserver(scrollChatToLatest);
+        chatResizeObserver.observe(chatMessagesElement);
+    }
+
+    chatInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" && !event.shiftKey && !event.isComposing) {
+            event.preventDefault();
+            chatForm.requestSubmit();
+        }
     });
 
     chatForm.addEventListener("submit", (event) => {
@@ -659,6 +909,8 @@ if (chatPanel && chatLauncher) {
         if (!content || emailDraftReady) {
             return;
         }
+
+        clearChatOptions();
 
         if (chatMessages.filter((message) => message.role === "user").length >= 24) {
             addChatBubble(
@@ -678,7 +930,8 @@ if (chatPanel && chatLauncher) {
                 projectDetails[key] = "";
             });
             activeQuestion = 0;
-            sendChatReply(`No problem. Let’s start again. ${projectQuestions[activeQuestion].prompt}`);
+            sendChatReply("No problem. Let’s start again.");
+            askForService();
             return;
         }
 
@@ -686,6 +939,12 @@ if (chatPanel && chatLauncher) {
 
         if (commonAnswer) {
             sendChatReply(commonAnswer);
+            addCurrentOptions();
+        } else if (!projectDetails.service) {
+            projectDetails.service = "Other service";
+            projectDetails.projectType = `Other service — ${content}`;
+            chatMessages[chatMessages.length - 1].content = `Other service: ${content}`;
+            askCurrentQuestion();
         } else {
             handleProjectAnswer(content);
         }
@@ -698,4 +957,5 @@ if (chatPanel && chatLauncher) {
     });
 
     updateChatControls();
+    addCurrentOptions();
 }

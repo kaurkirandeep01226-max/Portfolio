@@ -13,8 +13,8 @@
 
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/js/script.js" defer></script>
 </head>
 
 <body>
@@ -115,7 +115,7 @@
                 </div>
 
                 <img class="hero-photo"
-                     src="kiran.jpeg"
+                     src="assets/images/kiran.jpeg"
                      alt="Kirandeep Kaur"
                      fetchpriority="high">
 
@@ -330,7 +330,7 @@
 
 
                
-<a href="ai_mockinterview.html" class="project-link">
+<a href="pages/ai_mockinterview.html" class="project-link">
     <article class="experience-card feature-card reveal delay-1">
 
         <div class="card-topline">
@@ -434,13 +434,13 @@
 
                     <div class="work-image">
 
-                        <img src="arjann.jpeg"
+                        <img src="assets/images/arjann.jpeg"
                              alt="Arjan dhillon poster design"
                              loading="lazy">
 
                         <span class="work-number">01</span>
 
-                        <a href="arjann.jpeg"
+                        <a href="assets/images/arjann.jpeg"
                            target="_blank"
                            rel="noopener"
                            class="work-open"
@@ -477,13 +477,13 @@
 
                     <div class="work-image">
 
-                        <img src="computer_course.jpg"
+                        <img src="assets/images/computer_course.jpg"
                              alt="Computer Course Poster"
                              loading="lazy">
 
                         <span class="work-number">02</span>
 
-                        <a href="computer_course.jpg"
+                        <a href="assets/images/computer_course.jpg"
                            target="_blank"
                            rel="noopener"
                            class="work-open"
@@ -520,13 +520,13 @@
 
                     <div class="work-image">
 
-                        <img src="graphic-designing.jpg"
+                        <img src="assets/images/graphic-designing.jpg"
                              alt="Graphic design"
                              loading="lazy">
 
                         <span class="work-number">03</span>
 
-                        <a href="graphic-designing.jpg"
+                        <a href="assets/images/graphic-designing.jpg"
                            target="_blank"
                            rel="noopener"
                            class="work-open"
@@ -563,13 +563,13 @@
 
                     <div class="work-image">
 
-                        <img src="brand-design.jpg"
+                        <img src="assets/images/brand-design.jpg"
                              alt="Logo and branding design"
                              loading="lazy">
 
                         <span class="work-number">04</span>
 
-                        <a href="brand-design.jpg"
+                        <a href="assets/images/brand-design.jpg"
                            target="_blank"
                            rel="noopener"
                            class="work-open"
@@ -932,14 +932,19 @@
                  aria-live="polite"
                  aria-relevant="additions text">
                 <div class="chat-bubble chat-bubble-assistant">
-                     Hi! I’m a free guided helper built into this website. I can answer common questions and help put together your project brief. What type of work are you looking for: a website, portfolio, online store, landing page, or something else? You can ask a question at any time.
+                    Hi! I’m a free guided helper built into this website. Choose a service below to see its options, then I’ll help put together your project brief. You can also type a question at any time.
                 </div>
             </div>
 
             <div class="chat-controls">
+                <div class="chat-quick-replies"
+                     id="chatQuickReplies"
+                     role="group"
+                     aria-label="Suggested replies"></div>
                 <button class="chat-finish"
                         id="chatFinish"
                         type="button"
+                        hidden
                         disabled>Finish &amp; prepare email</button>
                 <form class="chat-compose" id="chatForm">
                     <label class="visually-hidden" for="chatInput">Your message</label>
