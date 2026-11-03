@@ -731,9 +731,104 @@
 
 
             <p class="contact-intro reveal">
-                I'm ready to learn, contribute, and take the next
-                step in my career. I'd love to hear from you.
+                Have a project in mind? Share a few details and tell me
+                what you'd like to create.
             </p>
+
+            <form class="project-form reveal" id="projectForm">
+                <div class="form-heading">
+                    <div>
+                        <span class="form-kicker">PROJECT INQUIRY</span>
+                        <h3>Tell me about your idea.</h3>
+                    </div>
+                    <span class="form-step-label" id="formStepLabel" aria-live="polite">
+                        Step 1 of 3
+                    </span>
+                </div>
+
+                <div class="form-progress"
+                     id="formProgress"
+                     role="progressbar"
+                     aria-label="Form progress"
+                     aria-valuemin="1"
+                     aria-valuemax="3"
+                     aria-valuenow="1">
+                    <span id="formProgressBar"></span>
+                </div>
+
+                <fieldset class="form-step" data-form-step="1">
+                    <legend>First, how can I reach you?</legend>
+                    <p class="form-step-hint">Share your contact details so I can get back to you.</p>
+
+                    <div class="form-fields">
+                        <label class="form-field">
+                            <span>Your name <b aria-hidden="true">*</b></span>
+                            <input type="text" name="Name" autocomplete="name" required>
+                        </label>
+
+                        <label class="form-field">
+                            <span>Email address <b aria-hidden="true">*</b></span>
+                            <input type="email" name="Email" autocomplete="email" required>
+                        </label>
+
+                        <label class="form-field">
+                            <span>Phone number <small>(optional)</small></span>
+                            <input type="tel" name="Phone" autocomplete="tel">
+                        </label>
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-step" data-form-step="2" hidden>
+                    <legend>What are you looking to create?</legend>
+                    <p class="form-step-hint">Choose one answer for each question.</p>
+
+                    <div class="form-choice-group">
+                        <span class="form-question">What type of work do you need? <b aria-hidden="true">*</b></span>
+                        <div class="form-choices">
+                            <label><input type="radio" name="Project type" value="Business website" required><span>Business website</span></label>
+                            <label><input type="radio" name="Project type" value="Portfolio"><span>Portfolio</span></label>
+                            <label><input type="radio" name="Project type" value="Online store"><span>Online store</span></label>
+                            <label><input type="radio" name="Project type" value="Landing page"><span>Landing page</span></label>
+                            <label><input type="radio" name="Project type" value="Other"><span>Other</span></label>
+                        </div>
+                    </div>
+
+                    <div class="form-choice-group">
+                        <span class="form-question">Which language should the website use? <b aria-hidden="true">*</b></span>
+                        <div class="form-choices">
+                            <label><input type="radio" name="Website language" value="English" required><span>English</span></label>
+                            <label><input type="radio" name="Website language" value="Punjabi"><span>Punjabi</span></label>
+                            <label><input type="radio" name="Website language" value="Hindi"><span>Hindi</span></label>
+                            <label><input type="radio" name="Website language" value="English and Punjabi"><span>English &amp; Punjabi</span></label>
+                            <label><input type="radio" name="Website language" value="Other"><span>Other</span></label>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-step" data-form-step="3" hidden>
+                    <legend>Tell me more about your project.</legend>
+                    <p class="form-step-hint">What should the website do, who is it for, and are there any features or examples you have in mind?</p>
+
+                    <label class="form-field">
+                        <span>Project details <b aria-hidden="true">*</b></span>
+                        <textarea name="Project details" rows="7" required
+                                  placeholder="Describe your idea, goals, features, preferred style, or anything else I should know."></textarea>
+                    </label>
+                </fieldset>
+
+                <div class="form-actions">
+                    <button class="form-button form-button-secondary" id="formBack" type="button" hidden>
+                        ← Back
+                    </button>
+                    <button class="form-button form-button-primary" id="formNext" type="button">
+                        Next step →
+                    </button>
+                    <button class="form-button form-button-primary" id="formSubmit" type="submit" hidden>
+                        Create email inquiry ↗
+                    </button>
+                </div>
+                <p class="form-note">Your answers will be added to an email draft for you to review and send.</p>
+            </form>
 
 
             <div class="contact-details reveal">
@@ -762,9 +857,9 @@
                 </div>
 
 
-                <a href="tel:+916239342533">
+                <a href="https://wa.me/916239342533">
 
-                    <span>CALL ME</span>
+                    <span>CHAT ON WHATSAPP</span>
 
                     <strong>
                         +91 62393 42533
@@ -812,6 +907,70 @@
         </section>
 
     </main>
+
+    <div class="chat-widget" id="chatWidget">
+        <section class="chat-panel"
+                 id="chatPanel"
+                 role="dialog"
+                 aria-label="AI project assistant"
+                 aria-modal="false"
+                 hidden>
+            <header class="chat-header">
+                <div>
+                    <span class="chat-status"><span></span> FREE PROJECT HELPER</span>
+                    <h2>How can I help?</h2>
+                </div>
+                <button class="chat-close"
+                        id="chatClose"
+                        type="button"
+                        aria-label="Close chat">×</button>
+            </header>
+
+            <div class="chat-messages"
+                 id="chatMessages"
+                 role="log"
+                 aria-live="polite"
+                 aria-relevant="additions text">
+                <div class="chat-bubble chat-bubble-assistant">
+                     Hi! I’m a free guided helper built into this website. I can answer common questions and help put together your project brief. What type of work are you looking for: a website, portfolio, online store, landing page, or something else? You can ask a question at any time.
+                </div>
+            </div>
+
+            <div class="chat-controls">
+                <button class="chat-finish"
+                        id="chatFinish"
+                        type="button"
+                        disabled>Finish &amp; prepare email</button>
+                <form class="chat-compose" id="chatForm">
+                    <label class="visually-hidden" for="chatInput">Your message</label>
+                    <textarea id="chatInput"
+                              name="message"
+                              rows="1"
+                              maxlength="1200"
+                              placeholder="Type your question..."
+                              required></textarea>
+                    <button class="chat-send" id="chatSend" type="submit" aria-label="Send message">↑</button>
+                </form>
+                <p class="chat-privacy">Free guided chat — no AI or paid API. Your answers stay in this browser until you choose to open and send the email draft.</p>
+            </div>
+        </section>
+
+        <button class="chat-launcher"
+                id="chatLauncher"
+                type="button"
+                aria-label="Open free project helper"
+                aria-controls="chatPanel"
+                aria-expanded="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H5l1.5-3A7.5 7.5 0 1 1 20 11.5Z"></path>
+                <path d="M8.5 11.5h.01M12.5 11.5h.01M16.5 11.5h.01"></path>
+            </svg>
+            <span class="chat-launcher-copy">
+                <strong>Need help?</strong>
+                <small>Free project helper</small>
+            </span>
+        </button>
+    </div>
 
 </body>
 </html>
