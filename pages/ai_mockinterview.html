@@ -2,10 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>DT1 AI Interview System v2</title>
+<title>Mock Interview Practice Project | Kirandeep Kaur</title>
+<meta name="description" content="Explore Kirandeep Kaur’s college web project: a browser-based mock interview practice interface with topic-based questions and session summaries.">
+<link rel="canonical" href="/pages/ai_mockinterview.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mock Interview Practice Project | Kirandeep Kaur">
+<meta property="og:description" content="Explore a browser-based college project for practising interview questions by topic.">
+<meta name="twitter:card" content="summary">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -402,7 +408,7 @@
 
 <div id="aiLoader">
   <div class="loader-ring"></div>
-  <div class="loader-text" id="loaderText">AI Analyzing...</div>
+  <div class="loader-text" id="loaderText">Preparing practice session...</div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -410,8 +416,12 @@
 <!-- ════ LOGIN PAGE ════ -->
 <div class="page active" id="loginPage">
   <div class="login-box">
-    <div class="logo">DT1 Systems v2</div>
-    <h1>AI Interview<br><span>Platform</span></h1>
+    <div class="logo">COLLEGE WEB PROJECT</div>
+    <h1>Mock Interview<br><span>Practice</span></h1>
+    <p style="color:var(--muted);font-size:13px;line-height:1.6;margin:-20px 0 24px">
+      A college web-development project for practising interview questions.
+      Emotion-style indicators in this demo are simulated, not camera-based assessments.
+    </p>
 
     <div class="error-msg" id="loginError"></div>
 
@@ -436,7 +446,7 @@
 <!-- ════ DASHBOARD PAGE ════ -->
 <div class="page" id="dashPage">
   <div class="topbar">
-    <div class="logo-mark">DT1 · AI INTERVIEW v2</div>
+    <div class="logo-mark">INTERVIEW PRACTICE</div>
     <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
       <div class="user-chip">
         <div class="avatar" id="dashAvatar">G</div>
@@ -456,12 +466,12 @@
     <div class="action-card" onclick="startInterview('mixed')">
       <div class="action-icon">🧠</div>
       <h3>Full Mock Interview</h3>
-      <p>10 AI-selected questions with live emotion detection & voice feedback</p>
+      <p>10 topic-based questions with speaking prompts and a session summary</p>
     </div>
     <div class="action-card" onclick="showCategorySelect()">
       <div class="action-icon">🎯</div>
       <h3>Topic Practice</h3>
-      <p>Focus on HTML, CSS, JS, HR, or programming with AI voice coaching</p>
+      <p>Practise HTML, CSS, JavaScript, HR, or programming questions by topic</p>
     </div>
     <div class="action-card" onclick="startInterview('quick')">
       <div class="action-icon">⚡</div>
@@ -496,7 +506,7 @@
 <!-- ════ INTERVIEW PAGE ════ -->
 <div class="page" id="interviewPage">
   <div class="topbar">
-    <div class="logo-mark">DT1 · LIVE INTERVIEW</div>
+    <div class="logo-mark">PRACTICE SESSION</div>
     <div style="display:flex;gap:10px;align-items:center">
       <div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--muted)" id="modeLabel">MIXED MODE</div>
       <button class="btn-sm btn-skip" onclick="endInterview()" style="border-radius:8px;">✕ End</button>
@@ -515,7 +525,10 @@
 
       <!-- Emotion Panel -->
       <div class="emotion-panel">
-        <div class="emotion-title">🧠 Emotion Detector</div>
+        <div class="emotion-title">🧠 Simulated Indicators</div>
+        <p style="color:var(--muted);font-size:11px;line-height:1.5;margin:0 0 12px">
+          Demo values only; this project does not assess emotions or analyze camera video.
+        </p>
         <div class="emotion-bars">
           <div class="emotion-row">
             <span>Confident</span>
@@ -543,7 +556,7 @@
 
       <div class="ai-face">
         <div class="ai-orb" id="aiOrb">🤖</div>
-        <div style="font-weight:700;margin-bottom:4px">DT1 AI Interviewer</div>
+        <div style="font-weight:700;margin-bottom:4px">Interview Practice</div>
         <div class="ai-status" id="aiStatus">READY</div>
       </div>
 
@@ -605,13 +618,16 @@
 
     <!-- Emotion Report -->
     <div class="emotion-report" id="emotionReport">
-      <h3>😊 Emotional Intelligence Report</h3>
+      <h3>😊 Simulated Practice Indicators</h3>
+      <p style="color:var(--muted);font-size:12px;line-height:1.5;margin-bottom:12px">
+        These demo values are generated for the interface and are not an assessment of your emotional state.
+      </p>
       <div id="emotionSummary"></div>
     </div>
 
     <!-- AI Performance Tips -->
     <div class="ai-tips" id="aiTipsSection">
-      <h3>✨ AI Personalized Tips</h3>
+      <h3>✨ Practice Tips</h3>
       <p id="aiTipsText"></p>
     </div>
 
@@ -880,11 +896,11 @@ function updateEmotionUI(e) {
   document.getElementById('eStressVal').textContent = e.stressed + '%';
 
   let label, ring;
-  if (e.stressed > 60) { label = '😰 HIGH STRESS DETECTED'; ring = 'var(--red)'; }
-  else if (e.confident > 65) { label = '💪 LOOKING CONFIDENT'; ring = 'var(--green)'; }
-  else if (e.nervous > 50) { label = '😬 SLIGHTLY NERVOUS'; ring = 'var(--yellow)'; }
-  else if (e.focused > 65) { label = '🎯 FOCUSED & ALERT'; ring = 'var(--accent)'; }
-  else { label = '😐 NEUTRAL STATE'; ring = 'var(--muted)'; }
+  if (e.stressed > 60) { label = '😰 HIGH STRESS · DEMO'; ring = 'var(--red)'; }
+  else if (e.confident > 65) { label = '💪 CONFIDENT · DEMO'; ring = 'var(--green)'; }
+  else if (e.nervous > 50) { label = '😬 NERVOUS · DEMO'; ring = 'var(--yellow)'; }
+  else if (e.focused > 65) { label = '🎯 FOCUSED · DEMO'; ring = 'var(--accent)'; }
+  else { label = '😐 NEUTRAL · DEMO'; ring = 'var(--muted)'; }
 
   document.getElementById('emotionLabel').textContent = label;
   document.getElementById('confRing').style.borderColor = ring + '99';
@@ -903,7 +919,7 @@ async function triggerEmotionCoach() {
     "High stress detected! Take a moment. It's okay to say: 'Let me think for a second.'"
   ];
   const tip = tips[Math.floor(Math.random() * tips.length)];
-  showToast('🧠 AI Coach: ' + tip);
+  showToast('🧠 Practice tip: ' + tip);
 }
 
 function getEmotionReport() {
@@ -1067,7 +1083,7 @@ async function getAIFeedback(question, userAnswer, correctAnswer, category) {
   const userMsg = `Question: "${question}"\nStudent said: "${userAnswer}"\nCorrect answer: "${correctAnswer}"\nCategory: ${category}`;
   const feedback = await callClaude(systemPrompt, userMsg, 80);
   if(feedback) {
-    addMsg('ai-analysis', `🤖 AI Coach: ${feedback}`);
+    addMsg('ai-analysis', `🤖 Practice feedback: ${feedback}`);
   }
 }
 

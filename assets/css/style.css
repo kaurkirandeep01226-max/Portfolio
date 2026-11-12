@@ -1900,7 +1900,259 @@ footer .back-top:hover {
     html {
         scroll-behavior: auto;
     }
+}
 
+/* =========================================
+   EDITORIAL PROFILE AND PROJECT PAGES
+========================================= */
+
+.editorial-page {
+    overflow-x: hidden;
+}
+
+.editorial-nav {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.editorial-nav a:not(.nav-cta):hover,
+.editorial-footer > a:last-child:hover {
+    color: var(--purple);
+}
+
+.editorial-hero {
+    padding: clamp(80px, 12vw, 150px) 10vw 100px;
+    background: var(--cream);
+}
+
+.editorial-hero h1 {
+    margin: 30px 0;
+    color: var(--navy);
+    font-size: clamp(3.2rem, 8vw, 7rem);
+    line-height: 0.98;
+    letter-spacing: -0.08em;
+}
+
+.editorial-hero h1 span {
+    color: var(--purple);
+}
+
+.editorial-lead {
+    max-width: 720px;
+    margin-bottom: 30px;
+    color: #53566b;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    line-height: 1.9;
+}
+
+.editorial-section {
+    display: grid;
+    grid-template-columns: minmax(200px, 0.75fr) 1.25fr;
+    gap: 7vw;
+    padding: 90px 10vw;
+}
+
+.editorial-heading h2,
+.editorial-cta h2 {
+    margin-top: 20px;
+    color: var(--navy);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.06em;
+}
+
+.editorial-copy {
+    display: grid;
+    gap: 20px;
+}
+
+.editorial-card {
+    padding: 28px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.42);
+}
+
+.editorial-card h3 {
+    margin: 12px 0;
+    color: var(--navy);
+    font-size: 1.3rem;
+}
+
+.editorial-card p {
+    max-width: 700px;
+    margin-top: 12px;
+    color: #53566b;
+    font-size: 0.9rem;
+    line-height: 1.85;
+}
+
+.editorial-card ol,
+.editorial-card ul {
+    padding-left: 1.4rem;
+    color: #53566b;
+    font-size: 0.9rem;
+    line-height: 1.85;
+}
+
+.editorial-card li + li {
+    margin-top: 8px;
+}
+
+.editorial-card pre {
+    margin-top: 16px;
+    padding: 18px;
+    overflow-x: auto;
+    background: var(--navy);
+    color: white;
+    font-size: 0.8rem;
+    line-height: 1.7;
+}
+
+.editorial-card code {
+    overflow-wrap: anywhere;
+}
+
+.editorial-projects {
+    padding: 10px 10vw 90px;
+}
+
+.editorial-project {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.85fr) 1.15fr;
+    align-items: center;
+    gap: 7vw;
+    padding: 55px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.editorial-project-image {
+    min-height: 280px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: #e9e8df;
+}
+
+.editorial-project-image img {
+    width: 100%;
+    height: 100%;
+    max-height: 520px;
+    object-fit: cover;
+}
+
+.project-image-dark {
+    background:
+        radial-gradient(circle at 75% 25%, rgba(0, 229, 255, 0.22), transparent 35%),
+        #0d1526;
+    color: #e2e8f0;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    line-height: 1.8;
+    letter-spacing: 0.12em;
+    text-align: center;
+}
+
+.editorial-project-copy h2 {
+    margin: 18px 0;
+    color: var(--navy);
+    font-size: clamp(1.7rem, 3.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.06em;
+}
+
+.editorial-project-copy p:not(.section-index) {
+    margin: 14px 0;
+    color: #53566b;
+    font-size: 0.9rem;
+    line-height: 1.85;
+}
+
+.editorial-project-copy .text-link {
+    display: inline-block;
+    margin-top: 8px;
+}
+
+.editorial-cta {
+    padding: 90px 10vw;
+    background: var(--cream);
+}
+
+.editorial-cta > p:not(.section-index) {
+    max-width: 650px;
+    margin-top: 20px;
+    color: #53566b;
+    line-height: 1.8;
+}
+
+.editorial-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 26px;
+    margin-top: 28px;
+}
+
+.editorial-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 18px;
+    padding: 30px 10vw;
+    border-top: 1px solid var(--line);
+}
+
+.editorial-footer p,
+.editorial-footer > a:last-child {
+    color: #53566b;
+    font-size: 0.78rem;
+}
+
+@media (max-width: 760px) {
+    .editorial-nav {
+        gap: 16px;
+        font-size: 0.7rem;
+    }
+
+    .editorial-hero {
+        padding-right: 7vw;
+        padding-left: 7vw;
+    }
+
+    .editorial-section,
+    .editorial-project {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .editorial-section,
+    .editorial-projects,
+    .editorial-cta {
+        padding-right: 7vw;
+        padding-left: 7vw;
+    }
+
+    .editorial-project-image {
+        min-height: 220px;
+    }
+
+    .editorial-footer {
+        padding-right: 7vw;
+        padding-left: 7vw;
+    }
+}
+
+@media (max-width: 420px) {
+    .editorial-nav {
+        gap: 10px;
+        font-size: 0.65rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
     *,
     *::before,
     *::after {
